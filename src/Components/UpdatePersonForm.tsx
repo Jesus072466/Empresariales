@@ -2,7 +2,7 @@ import { ChangeEvent, MouseEvent, useState } from "react";
 import Person from "../Models/Person";
 import axios from "axios";
 
-export default function CreatePersonForm() {
+export default function UpdatePersonForm() {
 
     const [id, setId] = useState('');
     const [name, setName] = useState('');
@@ -23,54 +23,30 @@ export default function CreatePersonForm() {
         setAge(parseInt(newValueForAge));
     }
 
-    async function handleSave(event: MouseEvent<HTMLButtonElement>){
+    async function handleUpdate(event: MouseEvent<HTMLButtonElement>){
         event.preventDefault();
 
-        const personToCreate = new Person(id, name, age);
+        const personToUpdate = new Person(id, name, age);
 
-        console.log('persona creada: ', personToCreate)
+        console.log('persona actualizada: ', personToUpdate)
 
-        await CreatePerson(personToCreate);
+        await UpdatePerson(personToUpdate);
 
         ClearForm();
 
-        window.alert('Person Created!');
+        window.alert('Person Updated!');
 
         window.location.reload();
 
     }
 
-    async function CreatePerson(personToCreate: Person){
-        await axios.post('http://localhost:3001/people', personToCreate, {
+    async function UpdatePerson(personToUpdate: Person){
+        await axios.put('http://localhost:3001/people', personToUpdate, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
     }
-
-    async function handleDelete(event: MouseEvent<HTMLButtonElement>){
-        event.preventDefault();
-
-        console.log('persona eliminada: ', id)
-
-        await DeletePerson(id);
-
-        ClearForm();
-
-        window.alert('Person Deleted!');
-
-        window.location.reload();
-
-    }
-
-    async function DeletePerson(id: string){
-        await axios.delete('http://localhost:3001/people/'+ id, {
-            headers: {
-                'Content-Type': 'Access-Control-Allow-Origin'
-            }
-        });
-    }
-
     function ClearForm(){
         setId('');
         setName('');
@@ -79,7 +55,7 @@ export default function CreatePersonForm() {
 
     return (
         <form >
-            <p>Create a new person</p>
+            <p>update a person</p>
             <input type="text" placeholder="ID" value={id} onChange={handleIdChange} />
             <br />
             <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
@@ -87,8 +63,7 @@ export default function CreatePersonForm() {
             <input type="number" placeholder="Age" value={age} onChange={handleAgeChange} />
             <br />
             <br />
-            <button className="Boton" onClick={handleSave} >Save</button>
-            <button className="Boton" onClick={handleDelete} >Delete</button>
+            <button className="Boton" onClick={handleUpdate} >Update</button>
             <br />
         </form>
     );
