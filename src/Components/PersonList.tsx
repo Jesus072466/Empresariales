@@ -17,19 +17,6 @@ export default function PersonList () {
         setLoaded(true);
     }
 
-    async function Handle (event: MouseEvent<HTMLButtonElement>){
-        event.preventDefault();
-        await DeletePerson(id);
-    }
-
-    async function DeletePerson(id: string){
-        await axios.delete('http://localhost:3001/people/'+ id, {
-            headers: {
-                'Content-Type': 'Access-Control-Allow-Origin'
-            }
-        });
-    }
-
     useEffect(() => {
         if (!loaded) {
          loadPeople();
@@ -43,7 +30,7 @@ export default function PersonList () {
             name={p.name} 
             age={p.age}
         />
-        <button itemID={p.id} onClick={Handle} value={p.id} >Borrar</button>
+        <button>Borrar</button>
         </div>
     ));
 
